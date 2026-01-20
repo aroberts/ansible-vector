@@ -1,7 +1,7 @@
 ---
 
 - name: Configure repository and Repository key on Debian
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
   block:
     - name: Ensure apt-transport-https curl and gnupg are installed
       ansible.builtin.apt:
@@ -29,20 +29,20 @@
       failed_when: vector_download_repo_key.rc != 0
       args:
         executable: /bin/bash
-      loop: "{{ vector_repo_key[ansible_os_family] }}"
+      loop: "{{ vector_repo_key[ansible_facts.os_family] }}"
 
     - name: Add vector repository
       ansible.builtin.apt_repository:
-        repo: "{{ vector_repo[ansible_os_family] }}"
+        repo: "{{ vector_repo[ansible_facts.os_family] }}"
         state: present
         filename: vector
 
 - name: Add vector repository for RedHat based distributions
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
   ansible.builtin.yum_repository:
     name: vector
     description: Vector
-    baseurl: "{{ vector_repo[ansible_os_family] }}"
+    baseurl: "{{ vector_repo[ansible_facts.os_family] }}"
     gpgcheck: true
     repo_gpgcheck: "{{ vector_repo_gpgcheck }}"
-    gpgkey: "{{ vector_repo_key[ansible_os_family] }}"
+    gpgkey: "{{ vector_repo_key[ansible_facts.os_family] }}"
