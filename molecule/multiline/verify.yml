@@ -1,0 +1,44 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Read vector configuration file
+      ansible.builtin.slurp:
+        src: /etc/vector/vector.toml
+      register: vector_config
+
+    - name: Decode configuration content
+      ansible.builtin.set_fact:
+        vector_config_content: "{{ vector_config.content | b64decode }}"
+
+    - name: Display config for debugging
+      ansible.builtin.debug:
+        var: vector_config_content
+
+    - name: Verify multiline string uses triple quotes
+      ansible.builtin.assert:
+        that:
+          - '"\"\"\".parsed = parse_json!" in vector_config_content or "\"\"\"" in vector_config_content'
+        fail_msg: "Multiline strings should use triple-quoted TOML syntax (\"\"\")"
+        success_msg: "Multiline strings correctly use triple-quoted TOML syntax"
+
+    - name: Verify config contains the transform source
+      ansible.builtin.assert:
+        that:
+          - '".parsed = parse_json!" in vector_config_content'
+          - '".severity = " in vector_config_content'
+        fail_msg: "Transform source content not found in config"
+        success_msg: "Transform source content correctly rendered"
+
+    - name: Verify vector service is running
+      ansible.builtin.service:
+        name: vector
+        state: started
+      register: result_vector_service
+
+    - name: Validate vector service state
+      ansible.builtin.assert:
+        that:
+          - result_vector_service.state == 'started'
+          - result_vector_service.changed == false
