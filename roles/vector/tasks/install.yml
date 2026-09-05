@@ -7,7 +7,7 @@
       when: ansible_facts.os_family == 'Debian'
       ansible.builtin.apt:
         deb: "https://apt.vector.dev/pool/v/ve/vector_{{ vector_version }}-1_{{ arch }}.deb"
-        install_recommends: true
+        install_recommends: "{{ vector_install_recommends }}"
       notify: Restart vector
       vars:
         arch: "{{ vector_arch[ansible_facts.machine] }}"

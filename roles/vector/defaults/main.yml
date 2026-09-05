@@ -26,3 +26,10 @@ vector_repo_gpgcheck: true
 
 # vector package name
 vector_package: vector
+
+# Install the Recommends of the downloaded .deb. Ansible's apt module treats a
+# deb's Recommends field as a hard install list, so an unresolvable recommend
+# fails the task. Vector recommends datadog-signing-keys, which apt.vector.dev
+# serves only from its `main` component. A host that enables just `vector-0`
+# cannot install it. Set this to false there.
+vector_install_recommends: true
