@@ -1,7 +1,7 @@
 ---
 namespace: telekom_mms
 name: vector
-version: 2.0.2
+version: 2.0.2+aroberts.1
 readme: README.md
 authors:
   - Dimitris Zervas <dzervas@dzervas.gr>
