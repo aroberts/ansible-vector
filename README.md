@@ -30,6 +30,7 @@ This is a ansible collection to set up [vector](https://vector.dev) on various s
 | vector_package                | no       | vector                                           | option to define vector version with package name
 | vector_version                | no       |                                                  | define vector version while vector is installed by source
 | vector_install_recommends     | no       | true                                             | install the Recommends of the downloaded .deb; set false when a recommend (datadog-signing-keys) is not in any enabled repo
+| vector_arch                   | no       | see `defaults/main.yml`                          | map of `ansible_facts.machine` to Debian package architecture, used to build the .deb download URL
 | sources                       | yes      | false                                            | ingest observability data from a wide variety of targets [link](https://vector.dev/docs/reference/configuration/sources/)
 | transforms                    | no       | false                                            | shape your data as it moves through your Vector topology [link](https://vector.dev/docs/reference/configuration/transforms/)
 | sinks                         | yes      | false                                            | deliver your observability data to a variety of destinations [link](https://vector.dev/docs/reference/configuration/sinks/)

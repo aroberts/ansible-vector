@@ -20,7 +20,8 @@
         disable_gpg_check: true # package is not signed
       notify: Restart vector
       vars:
-        arch: "{{ vector_arch[ansible_facts.machine] }}"
+        # rpm names an architecture the way uname does, so no lookup table.
+        arch: "{{ ansible_facts.machine }}"
 
 - name: Install vector from repository
   when: vector_install_from_repo | bool

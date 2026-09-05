@@ -33,3 +33,9 @@ vector_package: vector
 # serves only from its `main` component. A host that enables just `vector-0`
 # cannot install it. Set this to false there.
 vector_install_recommends: true
+
+# Debian package architecture, keyed by ansible_facts.machine. Only the Debian
+# install path reads this. RedHat builds its rpm URL from the machine name.
+vector_arch:
+  x86_64: amd64
+  aarch64: arm64
